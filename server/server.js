@@ -1,26 +1,24 @@
 const express = require('express');
-const connectDB = require('./config/database')
+const morgan = require('morgan');
+const connectDB = require('./config/db')
+
+
+
 const app = express();
-const PORT = process.env.PORT || 8000;
-
-// Middlewares
-app.use(express.json()); // to send body data in json format
 
 
+// middleware
+app.use(express.json());
+app.use(morgan('tiny'));
 
-// Routes
-app.get('/', (req, res) => {
-    res.send('Hello World');
+// routes
+app.get('/' , (req, res) => {
+    res.send('Hello World!')
 })
 
-
-
-// Server Configration
+// server configrations
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, async () => {
-    try {
-        await connectDB();
-        console.log(`The server is running over http://localhost:${PORT}`)
-    } catch (error) {
-        return
-    }
+    await connectDB();
+    console.log(`The server is listening to the http://localhost:${PORT}`)
 })
